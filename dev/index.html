@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>orgchart</title>
+</head>
+
+<body>
+  <noscript>
+    This is your fallback content in case JavaScript fails to load.
+  </noscript>
+  <div id="app">
+    Orgchart
+    <div>
+      <button @click.prevent="addItem">Add item</button>
+    </div>
+    <org-chart ref="orgchart" :data="tree" />
+  </div>
+</body>
+
+</html>
