@@ -1,6 +1,6 @@
 {
-  "name": "orgchart",
-  "version": "1.0.1",
+  "name": "vue-orgchart",
+  "version": "1.0.2",
   "description": "A orgchart vue plugin",
   "author": "Quang NPD (quangnpd@gmail.com)",
   "private": true,

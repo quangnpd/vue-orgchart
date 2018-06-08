@@ -40,7 +40,7 @@ const orgChartData = [
     title: 'Charles Little',
     img: '../common/img/avatar-4.png',
     parent: '2',
-    html: '<strong>Test</strong><div>Test span: <span class="a"><i data-est="test" class="fa fa-foverer"></i>span</span></div>',
+    html: '<strong>Test: Charles Little</strong><div>Test span: <span class="a"><i data-est="test" class="fa fa-foverer"></i>Marketer</span></div>',
     type: 'img-card'
   }
 ]
@@ -79,7 +79,9 @@ new Vue({
       } else {
         this.tree.push(newItem)
       }
-      console.log(this.tree)
+    },
+    onSearch(keyword, shape) {
+      return (shape.title && shape.title.indexOf(keyword) > -1) || (shape.text && shape.text.indexOf(keyword) > -1)
     }
   }
 })

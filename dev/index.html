@@ -15,7 +15,7 @@
     <div>
       <button @click.prevent="addItem">Add item</button>
     </div>
-    <org-chart ref="orgchart" :data="tree" />
+    <org-chart ref="orgchart" :search="onSearch" :data="tree" />
   </div>
 </body>
 

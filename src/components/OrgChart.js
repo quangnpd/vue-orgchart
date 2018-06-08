@@ -32,16 +32,20 @@ export default {
       type: Number,
       default: 1
     },
-    select: Boolean,
+    select: {
+      type: Boolean,
+      default: true
+    },
     margin: Object,
     gridStep: {
       type: Number,
       default: 20
     },
+    lineGap: Number,
     toolbar: {
       type: Array[Object],
       default: function() {
-        return []
+        return ''
       }
     },
     data: {
@@ -49,12 +53,26 @@ export default {
       default: function() {
         return []
       }
+    },
+    search: {
+      type: Function
+    }
+  },
+  data: function() {
+    return {
+      filterText: ''
     }
   },
   watch: {
     height(val, old) {
       if (val !== old) {
         this.$el.style.height = this.height + 'px'
+      }
+    },
+    scale(val, old) {
+      if (val !== old) {
+        this.oChart.config.scale = val
+        this.paint()
       }
     },
     data: function(val, old) {
@@ -72,12 +90,6 @@ export default {
       gridStep: this.gridStep,
       margin: this.margin,
       toolbar: this.toolbar
-    })
-    this.oChart.data.filter(shape => {
-      if (this.search && typeof this.search === 'function') {
-        return this.search(shape)
-      }
-      return true
     })
 
     // init events
@@ -135,14 +147,19 @@ export default {
     })
     this.oChart.events.on('Change', (id, status, shape) => {
       this.$emit('change', id, status, shape)
+      this.$forceUpdate()
     })
     this.oChart.events.on('Load', () => {
       this.$emit('load')
+      this.$forceUpdate()
     })
   },
   methods: {
+    isEmpty() {
+      return !this.oChart || !this.oChart.data._order.length
+    },
     parseData(data) {
-      this.oChart.data.parse(data)
+      this.oChart.data.parse([...data])
       this.paint()
     },
     loadData(data) {
@@ -185,6 +202,7 @@ export default {
     },
     paint() {
       this.oChart.paint()
+      this.$forceUpdate()
     },
     addItem(node) {
       return new Promise(resolve => {
@@ -211,6 +229,60 @@ export default {
     },
     getSelection() {
       return this.oChart.selection.getItem()
+    },
+    getNearId(id) {
+      return this.oChart.data.getNearId(id)
+    },
+    onSearch(value) {
+      this.parseData(
+        this.data.map(d => {
+          if (d.css) {
+            d.css = d.css.replace('search-matched dhx_selected', '').trim()
+          }
+          return d
+        })
+      )
+      let matches = this.oChart.data.findAll(shape => {
+        if (this.search && typeof this.search === 'function') {
+          return this.search(value, shape)
+        }
+        return !value
+      })
+      if (matches && value) {
+        let _m = []
+        matches.forEach(i => {
+          i.css = ((i.css || '') + ' search-matched dhx_selected').trim()
+          const _parents = [i]
+          const getParent = id => {
+            let p = this.oChart.data.getItem(id)
+            if (p) {
+              _parents.push(p)
+              if (p.parent) {
+                getParent(p.parent)
+              }
+            }
+          }
+          getParent(i.parent)
+          _m = [..._m, ..._parents]
+        })
+        _m = _m.reduce((nA, i) => {
+          if (!nA.filter(_i => _i.id.toString() === i.id.toString()).length) {
+            nA.push(i)
+          }
+          return nA
+        }, [])
+        this.parseData(_m)
+      } else if (!value) {
+        this.parseData(this.data)
+      }
+      console.log(this.oChart, this.data)
+      this.$forceUpdate()
+    },
+    onSearchInput(event) {
+      if (!event.target.value) {
+        event.target.blur()
+        this.onSearch()
+      }
     }
   },
   computed: {
