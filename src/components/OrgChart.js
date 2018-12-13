@@ -81,7 +81,8 @@ export default {
   },
   mounted: function() {
     this.$el.style.height = this.height + 'px'
-    this.oChart = new OrgChart(this.$el, {
+    let orgChartEle = this.$el.querySelector('#orgchart')
+    this.oChart = new OrgChart(orgChartEle, {
       type: 'org',
       defaultShapeType: this.shapeType,
       defaultLinkType: this.connectionType,
@@ -275,7 +276,6 @@ export default {
       } else if (!value) {
         this.parseData(this.data)
       }
-      console.log(this.oChart, this.data)
       this.$forceUpdate()
     },
     onSearchInput(event) {
