@@ -28,7 +28,7 @@
   height: 100%;
   overflow: auto;
 }
-.org-chart-container >>> .orgchart .dhx_diagram {
+.org-chart-container >>> .dhx_diagram {
   overflow: visible;
   height: auto;
   flex-grow: 1;
