@@ -5,13 +5,17 @@
         <input type="search" @search="onSearchInput" v-model="filterText" class="org-chart-filtering-input form-control" placeholder="Enter a keyword">
       </form>
     </div>
-    <slot name="left"></slot>
-    <div v-if="isEmpty()" class="empty-block">
-      <slot name="empty">
-        Not found any data
-      </slot>
+    <div class="org-chart-container">
+      <div class="left-side">
+        <slot name="left"></slot>
+      </div>
+      <div id="orgchart"></div>
+      <div v-if="isEmpty()" class="empty-block">
+        <slot name="empty">
+          Not found any data
+        </slot>
+      </div>
     </div>
-    <div id="orgchart"></div>
   </div>
 </template>
 
@@ -19,6 +23,16 @@
 <style src="@/vendor/diagram.css"></style>
 
 <style scoped>
+.org-chart-container {
+  display: flex;
+  height: 100%;
+  overflow: auto;
+}
+.org-chart-container .orgchart .dhx_diagram {
+  overflow: visible;
+  height: auto;
+  flex-grow: 1;
+}
 .container-fluid {
   padding: 15px;
   position: relative;
