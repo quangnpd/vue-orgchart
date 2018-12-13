@@ -5,6 +5,7 @@
         <input type="search" @search="onSearchInput" v-model="filterText" class="org-chart-filtering-input form-control" placeholder="Enter a keyword">
       </form>
     </div>
+    <slot name="left"></slot>
     <div v-if="isEmpty()" class="empty-block">
       <slot name="empty">
         Not found any data
@@ -37,7 +38,7 @@
   padding: 0.375rem 0.75rem;
   width: auto;
 }
-input[type='search']::-webkit-search-cancel-button {
+input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
 }
 .empty-block {

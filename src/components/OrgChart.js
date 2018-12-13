@@ -201,8 +201,8 @@ export default {
       return this.oChart.getScrollState()
     },
     paint() {
-      this.oChart.paint()
       this.$forceUpdate()
+      this.oChart.paint()
     },
     addItem(node) {
       return new Promise(resolve => {

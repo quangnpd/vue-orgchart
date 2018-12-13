@@ -16,8 +16,7 @@ const orgChartData = [
     id: '2',
     text: 'Manager',
     title: 'Mildred Kim',
-    img: '../common/img/avatar-2.png',
-    parent: '1'
+    img: '../common/img/avatar-2.png'
   },
   {
     id: '3',
